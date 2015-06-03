@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from django.utils.encoding import smart_unicode
 from django.utils.translation import ugettext_lazy as _
 
@@ -31,7 +32,7 @@ class Product(models.Model):
     stock_count = models.PositiveIntegerField(_("Stock Count"), default=0)
 
     is_visible = models.BooleanField(verbose_name=_("Visible"), default=True)
-    date_created = models.DateTimeField(_("Date Created"), auto_now=True)
+    date_created = models.DateTimeField(_("Date Created"), default=timezone.now)
 
     class Meta:
         verbose_name = _("Product")

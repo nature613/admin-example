@@ -6,16 +6,20 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ("name", "category", "stock_count", "can_be_sold")
     list_filter = ("category", "date_created")
     search_fields = ("name", "description", "sku_number", "barcode")
+    readonly_fields = ("date_created", )
     fieldsets = (
         ("Identity", {
-            "fields": ("name", "slug"),
+            "fields": ("category", "name", "slug"),
         }),
-        ("rr", {
-            "fields": ("description", "price", "price_unit"),
+        ("Detail", {
+            "fields": ("description", ("price", "price_unit")),
         }),
-        ("ww", {
-            "fields": ("category", "barcode", "sku_number", "stock_count", "is_visible"),
+        ("Stock", {
+            "fields": ("barcode", "sku_number", "stock_count"),
         }),
+        (None, {
+            "fields": ("is_visible", "date_created")
+        })
     )
 
     def can_be_sold(self, obj):
