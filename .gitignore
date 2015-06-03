@@ -56,4 +56,6 @@ docs/_build/
 # PyBuilder
 target/
 
+# Cardiff Shop
+.sqlite3
 .idea
