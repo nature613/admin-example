@@ -21,10 +21,16 @@ class CanBeSoldListFilter(SimpleListFilter):
             return queryset.filter(stock_count=0)
 
 
+class ProductImageInline(admin.TabularInline):
+    model = ProductImage
+    extra = 3
+
+
 class ProductAdmin(admin.ModelAdmin):
     list_display = ("name", "category", "stock_count", "can_be_sold")
     list_filter = ("category", "date_created", CanBeSoldListFilter)
     search_fields = ("name", "description", "sku_number", "barcode")
+    inlines = (ProductImageInline, )
 
     readonly_fields = ("date_created", )
     fieldsets = (
