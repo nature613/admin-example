@@ -57,5 +57,5 @@ docs/_build/
 target/
 
 # Cardiff Shop
-.sqlite3
+db.sqlite3
 .idea
