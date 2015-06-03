@@ -11,7 +11,7 @@ class Category(models.Model):
 
     class Meta:
         verbose_name = _("Category")
-        verbose_plural_name = _("Categories")
+        verbose_name_plural = _("Categories")
         ordering = ("name", )
 
     def __unicode__(self):
@@ -20,6 +20,7 @@ class Category(models.Model):
 
 class Product(models.Model):
     name = models.CharField(verbose_name=_("Name"), max_length=255)
+    slug = models.SlugField(verbose_name=_("Slug"), max_length=255)
     description = models.TextField(_("Description"))
     category = models.ForeignKey(Category, verbose_name=_("Category"), related_name="products")
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -29,12 +30,12 @@ class Product(models.Model):
     barcode_number = models.CharField(_("SKU number"), max_length=255)
 
     is_visible = models.BooleanField(verbose_name=_("Visible"), default=True)
-    date_created = models.DateTimeField(_("Date Created"), auto_now_add=True)
+    date_created = models.DateTimeField(_("Date Created"), auto_now=True)
 
     class Meta:
         verbose_name = _("Product")
-        verbose_plural_name = _("Products")
-        ordering = ("name", )
+        verbose_name_plural = _("Products")
+        ordering = ("name",)
 
     def __unicode__(self):
         return smart_unicode(self.name)
