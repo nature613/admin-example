@@ -53,6 +53,7 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 /cardiffshop/media/*
+/cardiffshop/uploads/*
 # PyBuilder
 target/
 
