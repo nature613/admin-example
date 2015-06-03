@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.utils.encoding import smart_unicode
 from django.utils.translation import ugettext_lazy as _
 
-from products.constants import PRICE_UNIT_CHOICES
+from products.constants import PRICE_UNIT_CHOICES, CAMPAIGN_CHOICES
 
 
 class Category(models.Model):
@@ -24,8 +24,15 @@ class Product(models.Model):
     slug = models.SlugField(verbose_name=_("Slug"), max_length=255)
     description = models.TextField(_("Description"))
     category = models.ForeignKey(Category, verbose_name=_("Category"), related_name="products")
+
+    campaign = models.CharField(_("Campaign"), choices=CAMPAIGN_CHOICES, blank=True, max_length=255)
+    campaign_end_date = models.DateField(_("Campaign End Date"), blank=True, null=True)
+
     price = models.DecimalField(max_digits=10, decimal_places=2)
     price_unit = models.CharField(_("Price Unit"), choices=PRICE_UNIT_CHOICES, max_length=10)
+    damaged = models.BooleanField(verbose_name=_("Damaged"), default=True,
+                                  help_text="Only select this if all items are damaged.")
+
 
     sku_number = models.CharField(_("SKU number"), blank=True, null=False, max_length=255)
     barcode = models.CharField(_("Barcode"), max_length=255)
