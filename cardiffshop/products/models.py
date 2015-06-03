@@ -42,6 +42,10 @@ class Product(models.Model):
     def __unicode__(self):
         return smart_unicode(self.name)
 
+    @models.permalink
+    def get_absolute_url(self):
+        return "product-detail", (self.slug, )
+
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product)
