@@ -39,3 +39,15 @@ class Product(models.Model):
 
     def __unicode__(self):
         return smart_unicode(self.name)
+
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product)
+    image = models.ImageField(verbose_name=_("Image"), upload_to="products/")
+    order = models.IntegerField(verbose_name=_("Ordering"), default=0)
+    alt_text = models.CharField(verbose_name=_("Alternative Text"), max_length=255, blank=True)
+
+    class Meta:
+        verbose_name = _("Product Image")
+        verbose_name_plural = _("Product Images")
+        ordering = ("order", )
