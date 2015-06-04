@@ -55,7 +55,7 @@ class Product(models.Model):
 
 
 class ProductImage(models.Model):
-    product = models.ForeignKey(Product)
+    product = models.ForeignKey(Product, related_name="images")
     image = models.ImageField(verbose_name=_("Image"), upload_to="products/")
     order = models.IntegerField(verbose_name=_("Ordering"), default=0)
     alt_text = models.CharField(verbose_name=_("Alternative Text"), max_length=255, blank=True)

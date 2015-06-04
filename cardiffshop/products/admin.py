@@ -1,4 +1,5 @@
 from products.models import Product, Category, ProductImage
+from django.conf import settings
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
 from suit.admin import SortableTabularInline
@@ -29,7 +30,7 @@ class ProductImageInline(SortableTabularInline):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("name", "category", "stock_count", "can_be_sold")
+    list_display = ("name", "category", "stock_count", "can_be_sold", "image_preview")
     list_filter = ("category", "date_created", CanBeSoldListFilter)
     search_fields = ("name", "description", "sku_number", "barcode")
     inlines = (ProductImageInline, )
@@ -70,6 +71,13 @@ class ProductAdmin(admin.ModelAdmin):
 
     can_be_sold.boolean = True
 
+    def image_preview(self, obj):
+        if obj.images.exists():
+            image = obj.images.all()[0]
+            return '<img src="%s" width="100">' % image.image.url
+        else:
+            return '<img src="%s%s" width="100">' % (settings.STATIC_URL, "images/no-image.jpg")
+    image_preview.allow_tags = True
 
 admin.site.register(Category)
 admin.site.register(Product, ProductAdmin)
