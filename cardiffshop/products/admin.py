@@ -27,33 +27,33 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ("name", "description", "sku_number", "barcode")
 
     readonly_fields = ("date_created", )
+    prepopulated_fields = {"slug": ("name",)}
+    radio_fields = {"campaign": admin.VERTICAL}
+
     fieldsets = (
-        ("Identity", {
-            'classes': ('suit-tab', 'suit-tab-identity',),
-            "fields": ("category", "name", "slug"),
-        }),
-        ("Detail", {
-            'classes': ('suit-tab', 'suit-tab-detail',),
-            "fields": ("description", ("price", "price_unit")),
-        }),
-        ("Stock", {
-            'classes': ('suit-tab', 'suit-tab-stock',),
-            "fields": ("barcode", "sku_number", "stock_count"),
+        (None, {
+            "fields": ("category", "name", "slug", "description"),
+            "classes": ("suit-tab", "suit-tab-identity",),
         }),
         (None, {
-            "fields": ("is_visible", "date_created")
-        })
+            "fields": (("price", "price_unit"), "campaign", "campaign_end_date", "damaged"),
+            "classes": ("suit-tab", "suit-tab-price",),
+        }),
+        (None, {
+            "fields": ("barcode", "sku_number", "stock_count", "is_visible", "date_created"),
+            "classes": ("suit-tab", "suit-tab-stock",),
+        }),
     )
 
     suit_form_tabs = (
         ('identity', 'Identity'),
-        ('detail', 'Detail'),
+        ('price', 'Price'),
         ('stock', 'Stock')
     )
 
     def can_be_sold(self, obj):
         """
-        Determines wheter the product can be sold or not.
+        Determines whether the product can be sold or not.
         """
         if obj.stock_count > 0:
             return True
