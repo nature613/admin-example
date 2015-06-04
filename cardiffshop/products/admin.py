@@ -24,8 +24,9 @@ class CanBeSoldListFilter(SimpleListFilter):
 
 class ProductImageInline(SortableTabularInline):
     model = ProductImage
-    extra = 3
+    extra = 0
     ordering = ("order",)
+
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ("name", "category", "stock_count", "can_be_sold")
