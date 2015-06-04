@@ -18,9 +18,9 @@ class CanBeSoldListFilter(SimpleListFilter):
     def queryset(self, request, queryset):
         value = self.value()
         if value == "1":
-            return queryset.filter(stock_count__gt=0)
+            return queryset.filter(stock_count__gt=0).filter(is_visible=True)
         if value == "0":
-            return queryset.filter(stock_count=0)
+            return queryset.exclude(stock_count__gt=0).exclude(is_visible=True)
 
 
 class ProductImageInline(SortableTabularInline):
@@ -73,7 +73,7 @@ class ProductAdmin(admin.ModelAdmin):
         """
         Determines whether the product can be sold or not.
         """
-        if obj.stock_count > 0:
+        if obj.stock_count > 0 and obj.is_visible:
             return True
         else:
             return False
