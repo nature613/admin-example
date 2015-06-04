@@ -25,12 +25,21 @@ class CanBeSoldListFilter(SimpleListFilter):
 
 class ProductImageInline(SortableTabularInline):
     model = ProductImage
+    fields = ("image", "image_preview", "alt_text")
+    readonly_fields = ("image_preview",)
     extra = 0
     ordering = ("order",)
 
+    def image_preview(self, obj):
+        if obj.image:
+            return '<img src="%s" width="100">' % obj.image.url
+        else:
+            return '<img src="%s%s" width="100">' % (settings.STATIC_URL, "images/no-image.jpg")
+    image_preview.allow_tags = True
+
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("name", "category", "stock_count", "can_be_sold", "image_preview")
+    list_display = ("name", "category", "stock_count", "can_be_sold")
     list_filter = ("category", "date_created", CanBeSoldListFilter)
     search_fields = ("name", "description", "sku_number", "barcode")
     inlines = (ProductImageInline, )
@@ -70,14 +79,6 @@ class ProductAdmin(admin.ModelAdmin):
             return False
 
     can_be_sold.boolean = True
-
-    def image_preview(self, obj):
-        if obj.images.exists():
-            image = obj.images.all()[0]
-            return '<img src="%s" width="100">' % image.image.url
-        else:
-            return '<img src="%s%s" width="100">' % (settings.STATIC_URL, "images/no-image.jpg")
-    image_preview.allow_tags = True
 
 admin.site.register(Category)
 admin.site.register(Product, ProductAdmin)
